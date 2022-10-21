@@ -1,0 +1,110 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Employee_Leaving.Models
+@model List<Employee>
+@{
+    ViewData["Title"] = "Admin";
+}
+<body style=" color:black">
+   <div class=" btn btn-warning"style="margin-bottom:30px ; color:white">
+       @Html.ActionLink("AddEmployee","AddEmployee")
+   </div>
+    <h2 style="color:black">Employee Details</h2>
+    <style>
+        * {
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+    <style>
+        table, th, td {
+             text-align:center;
+        }
+       
+    </style>
+   
+    
+    <table class="table" id="dataTable">
+
+            <thead style="background-color:khaki ;color:black">
+            <th>EmployeeID</th>
+            <th>Name</th>
+            <th>Email Id</th>
+            <th>Password</th>
+            <th>Phone Number</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>City</th>
+            <th>Details</th>
+            <th >Action</th>
+
+        </thead>
+        <tbody>  
+        @foreach (Employee item in Model)
+        {
+            <tr>
+                <td>@item.Emp_Id</td>
+                <td>@item.Name</td>
+                <td>@item.Email_Id</td>
+                <td>@item.Password</td>
+                <td>@item.PhoneNum</td>
+                <td>@item.Gender</td>
+                <td>@item.Age</td>
+                <td>@item.Location</td>
+                <td>
+                        <a href="/Home/LeaveDetailsshow/@item.Emp_Id" class="btn btn-secondary">Leave Details</a>
+                </td>
+                <td>
+                    <a href="/Home/EditEmployee?Emp_Id=@item.Emp_Id" class="btn btn-primary">Edit</a>
+                    <a  onclick="deleteEmployee(@item.Emp_Id)"  style="margin-left:30px" class=" btn btn-danger">Delete</a>
+                </td>
+
+            </tr>
+        }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            </tfoot>
+    </table>
+    
+</body>
+
+<script>
+    function deleteEmployee(Emp_Id) {
+    let result = confirm("Are you sure you want to delete?");
+    if (result) {
+        $.ajax({
+            type: "get",
+                url: '/Home/DeleteEmployee?Emp_Id=' + Emp_Id,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success == true) {
+                    location.reload();
+                }
+                else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+}
+</script>
+
+@section scripts
+{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").DataTable();
+        })
+    </script>
+}

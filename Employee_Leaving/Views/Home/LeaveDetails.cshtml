@@ -1,0 +1,104 @@
+﻿@model List<Leave>
+@{
+    ViewData["Title"] = "Admin";
+}
+<body style=" color:black">
+<br>
+    <h2 style="color:black">Leave Details</h2>
+    <style>
+        * {
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+    <style>
+        table, th, td {
+           
+            text-align: center;
+        }
+        th{
+            background-color: blueviolet;
+        }
+       
+    </style>
+    
+        <table class="table"  id="dataTable">
+            <thead style="background-color:khaki ;">
+        <th>LeaveId</th>
+        <th>EmployeeID</th>
+        <th>LeaveTypeId</th>
+        <th>Starting Date</th>
+        <th>Ending Date</th>
+        <th>Total No Days</th>
+        <th>ActionResult</th>
+        <th>Remaining NoLeaveDays</th>
+        <th>Action</th>
+       
+    </thead>
+    <tbody>
+
+    @foreach (Leave item in Model)
+    {
+        <tr>
+            <td>@item.Leave_Id</td>
+            <td>@item.Emp_Id</td>
+            <td>@item.LeaveType_Id</td>
+            <td>@item.StartingDate</td>
+            <td>@item.EndingDate</td>
+            <td>@item.TotalNoDays</td>
+            <td>@item.ActionResult</td>
+            <td>@item.RemainingLeaveDays</td>
+            <td>
+                    <a onclick="deleteLeave(@item.Emp_Id)" style="margin-left:30px" class=" btn btn-danger">Delete</a>
+            </td>
+     
+        </tr>
+    }
+       </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </tfoot>
+    </table>
+   
+    </body>
+
+<script>
+    function deleteLeave(Emp_Id) {
+        let result = confirm("Are you sure you want to delete?");
+        if (result) {
+            $.ajax({
+                type: "get",
+                url: '/Home/DeleteLeave?Emp_Id=' + Emp_Id,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success == true) {
+                        alert("ertyuj");
+                        location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+    }
+</script>
+
+</script>
+
+@section scripts
+    {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").DataTable();
+        })
+    </script>
+}

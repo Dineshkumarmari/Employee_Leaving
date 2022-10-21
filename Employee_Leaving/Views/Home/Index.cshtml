@@ -1,0 +1,67 @@
+﻿@model List<Leave>
+@{
+    ViewData["Title"] = "Admin";
+}
+<body style=" color:black">
+    <br>
+    <h2 style ="color:black">  List of Leave Apply</h2>
+     <style >
+        * {
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+    <style>
+        table, th, td {
+          
+            text-align:center;
+        }
+         table{
+           border-radius: 30px ;
+        }
+    </style>
+
+    <table class="table">
+        <tr>
+        <thead style="background-color:khaki;  color:black">
+            <th>LeaveId</th>
+            <th>EmployeeId</th>
+            <th>LeaveTypeId</th>
+            <th>Starting Date</th>
+            <th>Ending Date</th>
+            <th>Total No Days</th>
+            <th>Remaining No LeaveDays</th>
+            <th>ActionResult</th>
+            <th>ActionType</th>
+        </thead>
+
+        @foreach (Leave item in Model)
+        {
+            <tr>
+
+                <td>@item.Leave_Id</td>
+                <td>@item.Emp_Id</td>
+                <td>@item.LeaveType_Id</td>
+                <td>@item.StartingDate</td>
+                <td>@item.EndingDate</td>
+                <td>@item.TotalNoDays</td>
+                <td>@item.RemainingLeaveDays</td>
+                <td>@item.ActionResult</td>
+                <td>
+                    <button id="btnaccept_@item.Emp_Id,@item.LeaveType_Id" class="btn btn-success" value="@item.Emp_Id,@item.LeaveType_Id" onclick="acceptcall(@item.Emp_Id,@item.LeaveType_Id)">Accept</button>
+                    <button id="btnReject",style="margin-left:30px;" class="btn btn-danger" value="Reject" onclick="rejectedcall(@item.Emp_Id,@item.LeaveType_Id)">Reject</button>
+                </td>
+
+
+            </tr>
+        }
+    </table>
+    
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#btnReject').click(function () {
+            $(this).hide();
+        });
+    });
+</script>

@@ -1,0 +1,61 @@
+﻿@model List<EmployeeLeaveDetails>
+@{
+    ViewData["Title"] = "Admin";
+}
+<body style=" color:black">
+    <br>
+    <h2 style="color:black">Leave Details</h2>
+    <style>
+        * {
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+    <style>
+        table, th, td {
+            text-align: center;
+        }
+
+        th {
+            background-color: blueviolet;
+        }
+    </style>
+
+    <table class="table" id="dataTable">
+        <thead style="background-color:khaki ;">
+     
+        <th>EmployeeID</th>
+        <th>Leave Type</th>
+        <th>Starting Date</th>
+        <th>Ending Date</th>
+        <th>Total No Days</th>
+        <th>ActionResult</th>
+        <th>Remaining NoLeaveDays</th>
+      
+
+        </thead>
+        <tbody>
+
+            @foreach (EmployeeLeaveDetails item in Model)
+            {
+                <tr>
+
+                    <td>@item.EmployeeId</td>
+                    <td>@item.Leavename</td>
+                    <td>@item.StartingDate</td>
+                    <td>@item.EndingDate</td>
+                    <td>@item.TotalNoDays</td>
+                    <td>@item.ActionResult</td>
+                    <td>@item.RemainingLeaveDays</td>
+
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+</body>
