@@ -22,24 +22,22 @@
 
     <table class="table" id="dataTable">
         <thead style="background-color:khaki ;">
-     
-        <th>EmployeeID</th>
+        <tr>
+        <th>Employee Name</th>
         <th>Leave Type</th>
         <th>Starting Date</th>
         <th>Ending Date</th>
         <th>Total No Days</th>
-        <th>ActionResult</th>
+        <th>Status</th>
         <th>Remaining NoLeaveDays</th>
-      
-
+        </tr>
         </thead>
         <tbody>
 
             @foreach (EmployeeLeaveDetails item in Model)
             {
                 <tr>
-
-                    <td>@item.EmployeeId</td>
+                    <td>@item.EmployeeName</td>
                     <td>@item.Leavename</td>
                     <td>@item.StartingDate</td>
                     <td>@item.EndingDate</td>
@@ -52,8 +50,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td>
-                </td>
+               
             </tr>
         </tfoot>
     </table>

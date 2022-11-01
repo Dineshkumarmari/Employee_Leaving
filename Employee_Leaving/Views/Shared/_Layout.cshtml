@@ -1,42 +1,53 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-   
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Employee_Leaving</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Employee_Leaving.styles.css" asp-append-version="true" />
-  
-
-
 </head>
 <body>
     <header>
        
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a style="color:blue" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Leave Management</a>
+                <p style="font-size:25px;">Leave Management</p>
+         
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" style="font-size:16px;margin-left:25%">
                     <ul class="navbar-nav flex-grow-1">
-                       
+             
+                        <li class="nav-item" >
+                            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeaveApply">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-text-window" viewBox="0 0 16 16">
+                                    <path d="M3 6.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
+                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v1H1V2a1 1 0 0 1 1-1h12zm1 3v10a1 1 0 0 1-1 1h-2V4h3zm-4 0v11H2a1 1 0 0 1-1-1V4h10z" />
+                                </svg>  LeaveApply
+                            </a>
+                        </li>
+                        
                         <li class="nav-item">
-                            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeaveApply">LeaveApply</a>
-                        </li></p>
-                        <p>
+                            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeaveDetails">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                    <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+                                </svg>  LeaveDetails
+                            </a>
+                        </li>
+
                         <li class="nav-item">
-                            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeaveDetails">LeaveDetails</a>
-                        </li></p>
-                        <p>
-                        <li class="nav-item">
-                            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EmployeeDetails">EmployeeDetails</a>
-                        </li></p>
-                      
+                            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Admin">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
+                                    <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
+                                </svg>  Logout
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -55,8 +66,9 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/LeaveAction.js" asp-append-version="true"></script>
+    <script src="~/js/employee.js"></script>
+    <script src="~/js/leave.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

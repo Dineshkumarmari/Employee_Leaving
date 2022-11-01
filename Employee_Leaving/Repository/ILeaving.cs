@@ -21,12 +21,15 @@ namespace Employee_Leaving.Repository
         public Message AcceptLeave(int id,int Cid);
         public Message RejectLeave(int id, int Cid);
         public IEnumerable<EmployeeLeaveDetails>GetEmployeeLeave(int id);
+        public IEnumerable<EmployeeLeaveDetails> EmployeeLeavedetails();
+
+        public LoginDTO loginbyid(string number, string password);
 
         //LeaveTypes
         public Leave_Type AddType(Leave_Type LT);
         public Leave_Type GetId(int id);
         public IEnumerable<Leave_Type> GetAllType();
-       
+        public IEnumerable<Roll> Types();
     }
    
 }

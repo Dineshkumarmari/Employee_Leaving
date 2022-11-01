@@ -1,15 +1,63 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿ 
 @using Employee_Leaving.Models
 @model List<Employee>
 @{
     ViewData["Title"] = "Admin";
 }
-<body style=" color:black">
-   <div class=" btn btn-warning"style="margin-bottom:30px ; color:white">
-       @Html.ActionLink("AddEmployee","AddEmployee")
+   
+  @*      <div class="container-fluid">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+            </button>
+              <div>
+           
+            <ul class="navbar-nav flex-grow-1">
+        
+            <li class="nav-item" >
+            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeaveApply">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-text-window" viewBox="0 0 16 16">
+            <path d="M3 6.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v1H1V2a1 1 0 0 1 1-1h12zm1 3v10a1 1 0 0 1-1 1h-2V4h3zm-4 0v11H2a1 1 0 0 1-1-1V4h10z" />
+            </svg>  LeaveApply
+            </a>
+            </li>
+
+            <li class="nav-item">
+            <a style="color:darkblue" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeaveDetails">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+            <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+            </svg>  LeaveDetails
+            </a>
+            </li>
+            </ul>
+        
+            </div>
+            </div>*@
+<body style=" color:black;width:100%;">
+    <div class=" btn btn-warning" style=" margin-left:85% ;">
+
+        <div style="text-decoration:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+            </svg>  @Html.ActionLink("Add Employee","AddEmployee")
+        </div>
+
+    </div>
+    <div class=" btn btn-warning" style=" margin-left:85%;margin-top:1%">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+            </svg>
+            @Html.ActionLink("Leave Action","LeaveList")
+        </div>
+
    </div>
+
+    
     <h2 style="color:black">Employee Details</h2>
     <style>
         * {
@@ -24,9 +72,10 @@
     </style>
    
     
-    <table class="table" id="dataTable">
+    <table class="table" id="dataTable" >
 
             <thead style="background-color:khaki ;color:black">
+            <tr>
             <th>EmployeeID</th>
             <th>Name</th>
             <th>Email Id</th>
@@ -35,9 +84,8 @@
             <th>Gender</th>
             <th>Age</th>
             <th>City</th>
-            <th>Details</th>
-            <th >Action</th>
-
+            <th data-orderable ="false" style="text-align:center">Action</th>
+            </tr>
         </thead>
         <tbody>  
         @foreach (Employee item in Model)
@@ -51,12 +99,18 @@
                 <td>@item.Gender</td>
                 <td>@item.Age</td>
                 <td>@item.Location</td>
+                
+               
                 <td>
-                        <a href="/Home/LeaveDetailsshow/@item.Emp_Id" class="btn btn-secondary">Leave Details</a>
-                </td>
-                <td>
-                    <a href="/Home/EditEmployee?Emp_Id=@item.Emp_Id" class="btn btn-primary">Edit</a>
-                    <a  onclick="deleteEmployee(@item.Emp_Id)"  style="margin-left:30px" class=" btn btn-danger">Delete</a>
+                        <a href="/Home/LeaveDetailsshow/@item.Emp_Id" class="btn btn-secondary">
+                            Leave Details
+                        </a>
+                        <a href="/Home/EditEmployee?Emp_Id=@item.Emp_Id" class="btn btn-primary">
+                             Edit
+                        </a>
+                        <a onclick="deleteEmployee(@item.Emp_Id)" style="margin-left:30px" class=" btn btn-danger">
+                             Delete
+                        </a>
                 </td>
 
             </tr>
@@ -64,39 +118,14 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td>
-
-                    </td>
+                 
                 </tr>
             </tfoot>
     </table>
     
 </body>
 
-<script>
-    function deleteEmployee(Emp_Id) {
-    let result = confirm("Are you sure you want to delete?");
-    if (result) {
-        $.ajax({
-            type: "get",
-                url: '/Home/DeleteEmployee?Emp_Id=' + Emp_Id,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (response) {
-                if (response.success == true) {
-                    location.reload();
-                }
-                else {
-                    alert(response.message);
-                }
-            },
-            error: function () {
-                alert("error");
-            }
-        });
-    }
-}
-</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 @section scripts
 {
@@ -108,3 +137,8 @@
         })
     </script>
 }
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>

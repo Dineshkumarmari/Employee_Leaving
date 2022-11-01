@@ -3,15 +3,12 @@
 
 @{
     ViewData["Title"] = "Leave Apply";
-   
 }
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Leave Apply</title>
     <style>
-
-        
         * {
             font-family: 'Times New Roman', Times, serif;
           }
@@ -21,7 +18,7 @@
     <div class="text-center card w-50 mx-auto " style="box-shadow:20px 20px 50px 10px lightblue inset">
         <div class="card-body shadow rounded">
             <h1 class="display-8 card-title" style="color:black">Leave Apply Form</h1>
-            </br>
+          
             <style>
                 table {
                     width: 40%;
@@ -35,115 +32,59 @@
       <div class="card-text">
          <div align="center" >
 
-                <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
-                <div>Employee Name: </div>
+              <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
+                    <div>Employee Name: </div>
                 <div>
-                    @Html.DropDownListFor(m=>m.Emp_Id,Model.EmpList, new {@class="form-control"})
+                                @Html.DropDownListFor(m=>m.Emp_Id,Model.EmpList, new {@class="form-control" })
                 </div>
-                    </div>
+              </div>
         
                 <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
                 <div>LeaveType : </div>
-             <div>
+                   <div>
                                 @Html.DropDownListFor(m=>m.LeaveType_Id,Model.Leavetypes, new {@class="form-control",selected="Selected"})
+                   </div>
                 </div>
-                    </div>
 
                 <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
                 <div>StartingDate: </div>
                 <div>
 
-                                @Html.TextBoxFor(m => m.StartingDate ,new { id="start", @class="form-control",required = "required" , maxlength = "20" , type="date"})
+                                @Html.TextBoxFor(m => m.StartingDate ,new { @onChange= "getdays()",@class="form-control",required = "required" , maxlength = "20" , type="date"})
                 </div>
-                    </div>
+                </div>
 
                 <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
                 <div>EndingDate: </div>
                 <div>
-                                @Html.TextBoxFor(m => m.EndingDate ,new { id="end", @class="form-control",required = "required" , maxlength = "20",type="date"})
+                                @Html.TextBoxFor(m => m.EndingDate ,new { @onChange= "getdays()",@class="form-control",required = "required" , maxlength = "20",type="date"})
                 </div>
                     </div>
-                       
-                <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 " >
-                <div>TotalNoDays: </div>
-                <div>
-                                @Html.TextBoxFor(m =>m.TotalNoDays,new { id="total",@class="form-control", required = "required" , maxlength = "20",type="number",min="1"})
-                </div>
-                    </div>
-             <br />
-                <div>
+                        <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
+                            <div >
+                               Total No Days:
+                            </div>
+                            <div >
+                                <label id="days"></label>
+                                @Html.HiddenFor(m => m.TotalNoDays)
+                            </div>
+                        </div>
 
-                            <input type="submit" id="sub" onclick="func()" class="btn btn-danger" value="Apply" />
-                    </div>
+                <div>
+                     <input type="submit" class="btn btn-danger" value="Apply" />
+                </div>
 
                    
-            </div>
+         </div>
                
         </div>
       
         }
      </div>
-       
+       </div>
 
 </body>
 
 </html>
-
-
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-<script>   
-    $(document).ready(function() {   
-         $('#Leaveform').submit(function(e) {   
-             e.preventDefault();
-
-            var valdata = $("#Leaveform").serialize();
-
-            $.ajax({   
-                url: "/Home/Leave",
-                type: "POST",   
-                dataType: 'json',   
-                data: new FormData(Leaveform),
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',   
-                data: valdata,
-                success: function (response) {
-                    if (response.success == true) {
-                        location.reload();
-                    }
-                    else {
-                        alert(response.message);
-                    }
-                },
-            error: function () {
-                alert("error");
-            }
-        
-            });  
-         });
-    });
- </script>
-
-<script src="https://code.jquery.com/jquery-1.10.2.js">
-</script>
-<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js">
-</script>
-<script>
-    $(function () {
-        $("#start").datepicker();
-        var date1 = $("#start")
-    });
-    $(function () {
-        $("#end").datepicker();
-        var date2 = $("#end")
-    });
-
-    function func() {
-        start = new Date(start.value);
-        end = new Date(end.value);
-        var milli_secs = start.getTime() - end.getTime();
-
-        var days = milli_secs / (1000 * 3600 * 24);
-        document.getElementById("total").innerHTML =
-            Math.round(Math.abs(days));
-    }
-</script>

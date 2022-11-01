@@ -1,7 +1,7 @@
-﻿@model Employee_Leaving.Models.Employee
+﻿@model Employee_Leaving.Models.LoginDTO
 @{
     ViewData["Title"] = "Add Employee";
-    // Layout = "~/Pages/Shared/_Layout.cshtml";
+ 
 }
 <html>
 <head>
@@ -15,13 +15,11 @@
 </head>
 <body style="background-color:lavender; color:black">
   
-    </div>
     <div class="text-center card w-50 mx-auto " style="box-shadow:20px 20px 50px 10px lightblue inset" >
      <div class="card-body shadow rounded">
-           
 
             <h1 class="display-8 card-title" style="color:black">Employee Registration</h1>
-            </br>
+           
             <style>
                 table {
                     width: 40%;
@@ -37,7 +35,7 @@
             </style>
            
             
-            @using (Html.BeginForm("AddEmployees", "Home", FormMethod.Post))
+            @using (Html.BeginForm("AddEmployees", "Home", FormMethod.Post, new { id = "Employeeform" }))
             {
 
                 <div class="card-text ">
@@ -49,12 +47,18 @@
                             <div > @Html.TextBoxFor(m => m.Name ,new {  @class="form-control",required = "required",StringLength=25, MinimumLength = 5, ErrorMessage = "The name have minimum 5 and maximum 25 character",} ) </div>
                         </div>
                         <div style="height:50px;width: 85% ;" class=" mx-auto row row-cols-3 ">
+                            <div>Roll Name:<span style="color:red;font-size:20px">*</span> </div>
+                            <div>
+                                @Html.DropDownListFor(m=>m.RollId,Model.RollType, new {@class="form-control" })
+                            </div>
+                        </div>
+                        <div style="height:50px;width: 85% ;" class=" mx-auto row row-cols-3 ">
                             <div>Email Id:<span style="color:red;font-size:20px">*</span> </div>
                             <div> @Html.TextBoxFor(m => m.Email_Id,new {  @class="form-control",required = "required" , maxlength = "30"} )</div>
                         </div>
                         <div style="height:50px;width: 85% ;" class=" row row-cols-3 ">
                             <div>Password:<span style="color:red;font-size:20px">*</span> </div>
-                            <div> @Html.TextBoxFor(m => m.Password, new {  @class="form-control",required= "required",RegularExpression="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", ErrorMessage = "Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"})</div>
+                            <div> @Html.TextBoxFor(m => m.Password, new { @class="form-control",required= "required",RegularExpression="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", ErrorMessage = "Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"})</div>
                         </div>
                         <div style="height:50px;width: 85% ;" class=" row row-cols-3 ">
                             <div>PhoneNum:<span style="color:red;font-size:20px">*</span> </div>
@@ -77,25 +81,19 @@
                         </div>
                         <div style="height:50px;width: 85% ;" class=" row row-cols-3 ">
                             <div>City: </div>
+                         
                             <div>@Html.TextBoxFor(m => m.Location ,new {  @class="form-control",required = "required" , maxlength = "20"} )</div>
                         </div>
                         <br />
-                        <div>  <input type="submit" class="btn btn-danger" value="Submit" /></div>
+                        <div>  <input type="submit" class="btn btn-danger"  value="Submit" /></div>
                     </div>
               </div>
         
           }      
+       </div>
      </div>
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        @if (ViewBag.Message != null)
-        {
-            <script type="text/javascript">
-                window.onload = function () {
-                    alert("@ViewBag.Message");
-                };
-            </script>
-        }
 </body>
 </html>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 

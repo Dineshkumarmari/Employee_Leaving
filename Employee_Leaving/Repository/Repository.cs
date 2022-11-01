@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 
 namespace Employee_Leaving.Repository
 {
@@ -23,14 +25,14 @@ namespace Employee_Leaving.Repository
         public Employee GetbyId(int id)
         {
 
-            var emp = leavingDb.Employee.FirstOrDefault(x => x.Emp_Id== id);
+            var emp = leavingDb.Employee.FirstOrDefault(x => x.Emp_Id == id);
             leavingDb.SaveChanges();
             return emp;
         }
         public Employee GetbyEmail(string Email)
         {
 
-            var emp = leavingDb.Employee.FirstOrDefault(x => x.Email_Id ==Email);
+            var emp = leavingDb.Employee.FirstOrDefault(x => x.Email_Id == Email);
             leavingDb.SaveChanges();
             return emp;
         }
@@ -48,11 +50,12 @@ namespace Employee_Leaving.Repository
                 {
                     leavingDb.Add(emp);
                     leavingDb.SaveChanges();
+                    msg.success = true;
                     msg.message = "Employee Added Succesfully";
                     return msg;
                 }
 
-                else
+                else if (emp1 != null && emp2 != null)
                 {
                     Employee empl = GetbyId(emp.Emp_Id);
                     empl.Name = emp.Name;
@@ -64,12 +67,13 @@ namespace Employee_Leaving.Repository
                     empl.Location = emp.Location;
                     leavingDb.Update<Employee>(empl);
                     leavingDb.SaveChanges();
+                    msg.success = true;
                     msg.message = "Employee Updated Succesfully";
-                    return msg;
-                }
 
+                }
+                return msg;
             }
-              catch (Exception ex)
+            catch (Exception ex)
             {
                 msg.message = ex.Message;
                 return msg;
@@ -84,7 +88,7 @@ namespace Employee_Leaving.Repository
                 msg.success = false;
                 msg.message = "This employee id not registered";
                 var empl = leavingDb.Employee.FirstOrDefault(x => x.Emp_Id == emp.Emp_Id);
-                if (empl !=null)
+                if (empl != null)
                 {
                     empl.Name = emp.Name;
                     empl.Password = emp.Password;
@@ -116,24 +120,26 @@ namespace Employee_Leaving.Repository
                 msg.message = "This employee id not registered";
                 var emp = leavingDb.Employee.FirstOrDefault(x => x.Emp_Id == id);
                 var emp1 = leavingDb.Leave.FirstOrDefault(x => x.Emp_Id == id);
-               
-                    if ( emp!=null && emp1==null)
-                    {
-                        leavingDb.Remove(emp);
-                        leavingDb.SaveChanges();
-                        msg.message = "Employee Deleted Succesfully";
-                        return msg;
-                    }
+
+                if (emp != null && emp1 == null)
+                {
+                    leavingDb.Remove(emp);
+                    leavingDb.SaveChanges();
+                    msg.message = "Employee Deleted Succesfully";
+                    msg.success = true;
+                    return msg;
+                }
                 else if (emp1.StartingDate > DateTime.Now || emp1.EndingDate > DateTime.Now)
                 {
+
                     msg.message = " You can't Deleted This Employee..Because This Employee Applied for Leave in Future Date";
                     return msg;
                 }
-                else 
-                    {
-                        msg.message = "This Employee Applied for Leave.. So You can't Delete This Employee ";
-                        msg.success = false;
-                    }
+                else
+                {
+                    msg.message = "This Employee Applied for Leave.. So You can't Delete This Employee ";
+
+                }
                 return msg;
             }
 
@@ -153,6 +159,7 @@ namespace Employee_Leaving.Repository
             {
                 leavingDb.Remove(emp);
                 leavingDb.SaveChanges();
+                msg.success = true;
                 msg.message = "Employee Leave Deleted Succesfully";
             }
             return msg;
@@ -160,7 +167,7 @@ namespace Employee_Leaving.Repository
 
         public Leave Getbyid(int id)
         {
-            var emp = leavingDb.Leave.FirstOrDefault(x => x.Emp_Id==id);
+            var emp = leavingDb.Leave.FirstOrDefault(x => x.Emp_Id == id);
             return emp;
         }
         public Message AddLeave(Leave lev)
@@ -170,36 +177,53 @@ namespace Employee_Leaving.Repository
             var emp1 = leavingDb.Leave.FirstOrDefault(x => x.Emp_Id == lev.Emp_Id);
             var ep2 = leavingDb.Leave.FirstOrDefault(x => x.LeaveType_Id == lev.LeaveType_Id);
             var emp2 = leavingDb.LeaveTypes.FirstOrDefault(x => x.LeaveType_Id == lev.LeaveType_Id);
-
-            if (emp1 != null&& ep2!=null)
+            if (lev.TotalNoDays < emp2.TotalDays)
             {
-                var emp3 = leavingDb.Leave.Where(x => x.Emp_Id == lev.Emp_Id).ToList();
-                var ep1 = emp3.Where(x => x.ActionResult == "Accepted").ToList();
-                var ep = ep1.LastOrDefault(x => x.LeaveType_Id == lev.LeaveType_Id);
-                if (lev.StartingDate < lev.EndingDate && ep.RemainingLeaveDays>=lev.TotalNoDays)
+                if (emp1 != null && ep2 != null)
                 {
-                 
+                    var emp3 = leavingDb.Leave.Where(x => x.Emp_Id == lev.Emp_Id).ToList();
+                    var ep1 = emp3.Where(x => x.ActionResult == "Accepted").ToList();
+                    var ep = ep1.LastOrDefault(x => x.LeaveType_Id == lev.LeaveType_Id);
+
+                    var ep3 = emp3.Where(x => x.ActionResult == "Rejected").ToList();
+                    var ep4 = ep3.LastOrDefault(x => x.LeaveType_Id == lev.LeaveType_Id);
+
+                    if (ep.RemainingLeaveDays >= lev.TotalNoDays || ep4.RemainingLeaveDays >= lev.TotalNoDays || lev.StartingDate < lev.EndingDate)
+                    {
+                        lev.RemainingLeaveDays = emp2.TotalDays;
+                        lev.LeaveType_Id = lev.LeaveType_Id;
+                        leavingDb.Add(lev);
+                        leavingDb.SaveChanges();
+                        msg.success = true;
+                        msg.message = "Leave Applied successfully";
+                        return msg;
+                    }
+                    else
+                    {
+                        msg.success = false;
+                        msg.message = "You Can't Take  Leave .. Because your  " + emp2.LeaveType + " Total Leave days Limit crossed..";
+                        return msg;
+                    }
+                }
+                else
+                {
                     lev.RemainingLeaveDays = emp2.TotalDays;
-                    lev.LeaveType_Id = lev.LeaveType_Id;
                     leavingDb.Add(lev);
                     leavingDb.SaveChanges();
+                    msg.success = true;
                     msg.message = "Leave Applied successfully";
                     return msg;
                 }
-
-                msg.message = "You Can't Take  Leave .. Because your  " + emp2.LeaveType+ " Total Leave days Limit crossed..";
-                return msg;
             }
-            lev.RemainingLeaveDays = emp2.TotalDays;
-            leavingDb.Add(lev);
-            leavingDb.SaveChanges();
-            msg.message = "Leave Applied successfully";
+            msg.success = false;
+            msg.message = emp2.LeaveType + "  Total Leave days Limit crossed..";
             return msg;
-     
+
         }
 
         public IEnumerable<EmployeeLeaveDetails> GetEmployeeLeave(int id)
         {
+
             {
                 var employeeleave = (from Leave in leavingDb.Leave
                                      join Employee in leavingDb.Employee on Leave.Emp_Id equals Employee.Emp_Id
@@ -207,8 +231,33 @@ namespace Employee_Leaving.Repository
                                      where Leave.Emp_Id == id
                                      select new EmployeeLeaveDetails
                                      {
-                                         EmployeeId = Leave.Emp_Id,
-                                         Leavename= leavedetail.LeaveType,
+                                         EmployeeName = Employee.Name,
+                                         Leavename = leavedetail.LeaveType,
+                                         StartingDate = Leave.StartingDate,
+                                         EndingDate = Leave.EndingDate,
+                                         TotalNoDays = Leave.TotalNoDays,
+                                         ActionResult = Leave.ActionResult,
+                                         RemainingLeaveDays = Leave.RemainingLeaveDays,
+                                     }).ToList();
+                return employeeleave;
+            }
+        }
+
+
+        public IEnumerable<EmployeeLeaveDetails> EmployeeLeavedetails()
+        {
+
+            {
+                var employeeleave = (from Leave in leavingDb.Leave
+                                     join Employee in leavingDb.Employee on Leave.Emp_Id equals Employee.Emp_Id
+                                     join leavedetail in leavingDb.LeaveTypes on Leave.LeaveType_Id equals leavedetail.LeaveType_Id
+                                     select new EmployeeLeaveDetails
+                                     {
+                                         LeaveTypeId = Leave.LeaveType_Id,
+                                         Emp_Id = Employee.Emp_Id,
+                                         LeaveId = Leave.Leave_Id,
+                                         EmployeeName = Employee.Name,
+                                         Leavename = leavedetail.LeaveType,
                                          StartingDate = Leave.StartingDate,
                                          EndingDate = Leave.EndingDate,
                                          TotalNoDays = Leave.TotalNoDays,
@@ -256,77 +305,112 @@ namespace Employee_Leaving.Repository
         public Leave_Type GetId(int id)
         {
             var emp = leavingDb.LeaveTypes.FirstOrDefault(x => x.LeaveType_Id == id);
-             return emp;
+            return emp;
         }
         public IEnumerable<Leave_Type> GetAllType()
         {
             return leavingDb.LeaveTypes.ToList();
         }
-        public Message AcceptLeave(int id,int Cid)
+        public Message AcceptLeave(int id, int Cid)
         {
             Message msg = new Message();
             var emp3 = leavingDb.Leave.Where(x => x.Emp_Id == id).ToList();
             var ep1 = emp3.Where(x => x.ActionResult == "Accepted").ToList();
-            var ep=ep1.LastOrDefault(x=>x.LeaveType_Id==Cid);
-            var newemp = leavingDb.Leave.Where(x => x.ActionResult == "Pending").ToList();
-            var emp = newemp.LastOrDefault(x => x.Emp_Id == id);
-
-            if (emp.RemainingLeaveDays - emp.TotalNoDays < 0)
-            {
-                msg.message = "You cant apply leave";
-                return msg;
-            }
-            if (ep==null && emp.RemainingLeaveDays - emp.TotalNoDays>=0)
-            {
-                emp.ActionResult = "Accepted";
-                emp.RemainingLeaveDays = emp.RemainingLeaveDays - emp.TotalNoDays;
-                leavingDb.SaveChanges();
-                msg.message = "Leave Accepted Succesfully";
-                return msg;
-            }
-            if (ep.RemainingLeaveDays - emp.TotalNoDays < 0)
-            {
-                msg.message = "You cant apply leave";
-                return msg;
-            }
-            if (ep!=null && ep.RemainingLeaveDays - emp.TotalNoDays>=0)
-            {
-                emp.ActionResult = "Accepted";
-                emp.RemainingLeaveDays = ep.RemainingLeaveDays - emp.TotalNoDays;
-                leavingDb.SaveChanges();
-                msg.message = "Leave Accepted Succesfully";
-                return msg;
-            }
-            return msg;
-
-        }
-
-            public Message RejectLeave(int id, int Cid)
-            {
-            Message msg = new Message();
-            var emp3 = leavingDb.Leave.Where(x => x.Emp_Id == id).ToList();
-            var ep1 = emp3.Where(x => x.ActionResult == "Accepted").ToList();
             var ep = ep1.LastOrDefault(x => x.LeaveType_Id == Cid);
+
             var newemp = leavingDb.Leave.Where(x => x.ActionResult == "Pending").ToList();
             var emp = newemp.LastOrDefault(x => x.Emp_Id == id);
 
             if (ep == null && emp.RemainingLeaveDays - emp.TotalNoDays >= 0)
             {
-                emp.ActionResult = "Rejected";
-                emp.RemainingLeaveDays = emp.RemainingLeaveDays;
+                emp.ActionResult = "Accepted";
+                emp.RemainingLeaveDays = emp.RemainingLeaveDays - emp.TotalNoDays;
                 leavingDb.SaveChanges();
-                msg.message = "Leave Rejected Succesfully";
+                msg.success = true;
+                msg.message = "Leave Accepted Succesfully";
                 return msg;
             }
+
             if (ep != null && ep.RemainingLeaveDays - emp.TotalNoDays >= 0)
             {
-                emp.ActionResult = "Rejected";
-                emp.RemainingLeaveDays = ep.RemainingLeaveDays;
+                emp.ActionResult = "Accepted";
+                emp.RemainingLeaveDays = ep.RemainingLeaveDays - emp.TotalNoDays;
                 leavingDb.SaveChanges();
-                msg.message = "Leave Rejected Succesfully";
+                msg.success = true;
+                msg.message = "Leave Accepted Succesfully";
                 return msg;
             }
             return msg;
+
         }
+
+        public Message RejectLeave(int id, int Cid)
+        {
+            Message msg = new Message();
+            var emp3 = leavingDb.Leave.Where(x => x.Emp_Id == id).ToList();
+            var ep1 = emp3.Where(x => x.ActionResult == "Accepted").ToList();
+            var ep = ep1.LastOrDefault(x => x.LeaveType_Id == Cid);
+
+            var emp4 = leavingDb.Leave.Where(x => x.Emp_Id == id).ToList();
+            var ep2 = emp4.Where(x => x.ActionResult == "Rejected").ToList();
+            var ep3 = ep2.LastOrDefault(x => x.LeaveType_Id == Cid);
+
+            var newemp = leavingDb.Leave.Where(x => x.ActionResult == "Pending").ToList();
+            var emp = newemp.LastOrDefault(x => x.LeaveType_Id == Cid);
+
+            if (emp != null)
+            {
+                emp.ActionResult = "Rejected";
+                emp.RemainingLeaveDays = emp.RemainingLeaveDays;
+                leavingDb.SaveChanges();
+                msg.success = true;
+                msg.message = "Leave Rejected Succesfully";
+                return msg;
+            }
+            if (ep != null && DateTime.Now <= ep.EndingDate && DateTime.Now <= ep.StartingDate)
+            {
+                ep.ActionResult = "Rejected";
+                ep.RemainingLeaveDays = ep.RemainingLeaveDays + ep.TotalNoDays;
+                leavingDb.SaveChanges();
+                msg.success = true;
+                msg.message = "Leave Rejected Succesfully";
+                return msg;
+            }
+            msg.message = "You can't reject this Id ..";
+            return msg;
+        }
+        public IEnumerable<Roll> Types()
+        {
+            return leavingDb.Roll.ToList();
+        }
+
+        public LoginDTO loginbyid(string number, string password)
+        {
+            var employee = (from Employee in leavingDb.Employee
+
+
+
+                            join Roll in leavingDb.Roll on Employee.RollId equals Roll.RollId
+                            where Employee.Password == password && Employee.Email_Id == number
+                            select new LoginDTO()
+                            {
+                                Email_Id = Employee.Email_Id,
+                                Password = Employee.Password,
+                                Emp_Id = Employee.Emp_Id,
+                                Name = Employee.Name,
+                                RollId = Roll.RollId,
+                                RollName = Roll.RollName,
+
+
+                            }).FirstOrDefault();
+
+
+
+            return employee;
+        }
+
     }
+
+    
+
 }

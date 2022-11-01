@@ -1,33 +1,103 @@
-﻿@*@page
-@model Employee_Leaving.Views.Home.AdminModel
-<h2>Welcome...</h2>*@
+﻿@{
+   
+    Layout = "~/Views/Shared/Login.cshtml";
+}
+@model Employee_Leaving.Models.LoginDTO
+<style>
+    * {
+        font-family: 'Times New Roman', Times, serif;
+    }
+</style>
+<body style="background-color:lavender; color:black">
+    <div class="text-center card w-50 mx-auto " style="box-shadow:20px 20px 50px 10px lightblue inset; margin-top:155Px">
+        <div class="card-body shadow rounded">
+            <h1 class="display-8 card-title" style="color:black">Login Page</h1>
+          
+            <style>
+                table {
+                    width: 40%;
+                    border: 1px solid;
+                    border-radius: 30px;
+                }
+            </style>
 
-<section class="vh-100" style="background-color: lavender;">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                    <div class="card-body p-5 text-center">
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+      <div class="card-text">
+         <div align="center" >
 
-                        <h3 class="mb-5">Sign in</h3>
+                <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
+                <div>Email_Id: </div>
+                <div>
 
-                        <div class="form-outline mb-4">
-                            <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
-                            <label class="form-label" for="typeEmailX-2">Email</label>
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
-                            <label class="form-label" for="typePasswordX-2">Password</label>
-                        </div>
-
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-
-                        <hr class="my-4">
-                    </div>
+                                @Html.TextBoxFor(m => m.Email_Id ,new { @class="form-control",required = "required" , maxlength = "50"})
                 </div>
+                </div>
+
+                <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 ">
+                <div>Password: </div>
+                <div>
+                                @Html.TextBoxFor(m => m.Password ,new {@class="form-control",required = "required" , maxlength = "20"})
+                </div>
+                    </div>
+                      
+                <div>
+                            <button class="btn btn-danger">Login</button>
+                        </div>
+                   
+         </div>
+               
+        </div>
+      
+        }
+     </div>
+       </div>
+       </body>
+@*</body>
+<body style="background-color:lavender; color:black">
+    <div class="text-center card w-50 mx-auto " style="box-shadow:20px 20px 50px 10px lightblue inset">
+        <div class="card-body shadow rounded">
+            <h1 class="display-8 card-title" style="color:black">Login Page</h1>
+
+            <style>
+                table {
+                    width: 40%;
+                    border: 1px solid;
+                    border-radius: 30px;
+                }
+            </style>
+@using (Html.BeginForm(FormMethod.Post))
+{
+
+     <div class="card-text">
+     <div align="center">
+
+        <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3">
+            <div >EMail Id <span id="mandatory"> * </span></div>
+            <div class="col-md-6">@Html.TextBoxFor(model=>model.Email_Id, new { @class="form-control", required = "required" , maxlength = "50"}  )</div>
+        </div>
+
+
+
+        <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3">
+            <div>Password<span id="mandatory"> * </span></div>
+            <div>
+                @Html.TextBoxFor(model=>model.Password , new { @class="form-control", required = "required" , maxlength = "50"} )
             </div>
         </div>
-    </div>
-</section>
 
+    <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3">
+            <div>
+            <button class="btn btn-danger">Login</button>
+            </div>
+        </div>
+
+
+
+    </div>
+    </div>
+   
+}
+        </div>
+    </div>
+</body>*@

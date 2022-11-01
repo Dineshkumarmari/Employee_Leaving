@@ -1,6 +1,8 @@
 ﻿using ServiceStack.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using ForeignKeyAttribute = System.ComponentModel.DataAnnotations.Schema.ForeignKeyAttribute;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 using StringLengthAttribute = System.ComponentModel.DataAnnotations.StringLengthAttribute;
 
@@ -13,8 +15,6 @@ namespace Employee_Leaving.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "The name can not be empty")]
         [StringLength(25, MinimumLength = 5, ErrorMessage = "The name have minimum 5 and maximum 25 character")]
         public string? Name { get; set; }
-
-
 
         [Unique]
         [Required]
@@ -41,6 +41,9 @@ namespace Employee_Leaving.Models
         [MaxLength(100)]
         public string? Location { get; set; }
 
+       [ForeignKey("Roll")]
+        public int RollId { get; set; }
+
     }
-    
+
 }

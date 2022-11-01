@@ -1,0 +1,85 @@
+﻿@model List<EmployeeLeaveDetails>
+@{
+    ViewData["Title"] = "Admin";
+
+}
+<body style=" color:black">
+ 
+  <div class=" btn btn-warning " id="heading" >
+         @Html.ActionLink("Back to List","EmployeeDetails")
+   </div>
+    <br>
+    <h2 style="color:black">  List of Leave Apply</h2>
+    <style>
+        * {
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+    <style>
+        table, th, td {
+            text-align: center;
+        }
+    </style>
+
+    <table class="table" id="dataTable">
+
+        <thead style="background-color:khaki;  color:black">
+            <tr>
+                <th>LeaveId</th>
+                <th>Employee Name</th>
+                <th>LeaveTypeId</th>
+                <th>Starting Date</th>
+                <th>Ending Date</th>
+                <th>Total No Days</th>
+                <th>Remaining No LeaveDays</th>
+                <th>Status</th>
+                <th data-orderable="false">Action</th>
+            </tr>
+        </thead>
+
+
+        @foreach (EmployeeLeaveDetails item in Model)
+        {
+            <tr>
+
+                <td>@item.LeaveId</td>
+                <td>@item.EmployeeName</td>
+                <td>@item.Leavename</td>
+                <td>@item.StartingDate</td>
+                <td>@item.EndingDate</td>
+                <td>@item.TotalNoDays</td>
+                <td>@item.RemainingLeaveDays</td>
+                <td>@item.ActionResult</td>
+                <td>
+                    <button id="btnaccept_@item.Emp_Id,@item.LeaveTypeId" class="btn btn-success @(item.ActionResult=="Accepted"? "disabled" : "")  @(item.ActionResult=="Rejected"? "disabled" : "") " value="@item.Emp_Id,@item.LeaveTypeId" onclick="acceptcall(@item.Emp_Id,@item.LeaveTypeId)">Accept</button>
+                    <button id="btnReject" ,style="margin-left:30px;" class="btn btn-danger  @(item.ActionResult=="Rejected"? "disabled" : "")  " value="Reject" onclick="rejectedcall(@item.Emp_Id,@item.LeaveTypeId)">Reject</button>
+                </td>
+
+
+            </tr>
+        }
+    </table>
+    <tfoot>
+        <tr>
+            
+        </tr>
+    </tfoot>
+
+</body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section scripts
+    {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").DataTable();
+        })
+
+    </script>
+    }
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>

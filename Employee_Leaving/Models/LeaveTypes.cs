@@ -9,8 +9,7 @@ namespace Employee_Leaving.Models
         [Key]
      public int LeaveType_Id { get; set; }
      public string? LeaveType { get; set; }
-
-    public int TotalDays { get; set; }
+     public int TotalDays { get; set; }
 
    
     }

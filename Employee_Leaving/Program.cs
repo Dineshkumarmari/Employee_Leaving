@@ -1,4 +1,5 @@
 using Employee_Leaving.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,20 @@ builder.Services.AddDbContext<LeavingDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("connection"));
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Home/Admin";
+    });
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = ".AspNetCore.Cookies"; options.ExpireTimeSpan = TimeSpan.FromMinutes(3); options.SlidingExpiration = true;
+});
+
+
 builder.Services.AddScoped<ILeaving, Repository>();
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
@@ -27,6 +42,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

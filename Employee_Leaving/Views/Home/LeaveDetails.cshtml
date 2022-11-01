@@ -1,4 +1,4 @@
-﻿@model List<Leave>
+﻿@model List<EmployeeLeaveDetails>
 @{
     ViewData["Title"] = "Admin";
 }
@@ -23,25 +23,26 @@
     
         <table class="table"  id="dataTable">
             <thead style="background-color:khaki ;">
+            <tr>
         <th>LeaveId</th>
-        <th>EmployeeID</th>
-        <th>LeaveTypeId</th>
+        <th>Employee Name</th>
+        <th>LeaveType</th>
         <th>Starting Date</th>
         <th>Ending Date</th>
         <th>Total No Days</th>
-        <th>ActionResult</th>
+        <th>Status</th>
         <th>Remaining NoLeaveDays</th>
-        <th>Action</th>
-       
+        <th data-orderable="false">Action</th>
+            </tr>
     </thead>
     <tbody>
 
-    @foreach (Leave item in Model)
+    @foreach (EmployeeLeaveDetails item in Model)
     {
         <tr>
-            <td>@item.Leave_Id</td>
-            <td>@item.Emp_Id</td>
-            <td>@item.LeaveType_Id</td>
+            <td>@item.LeaveId</td>
+            <td>@item.EmployeeName</td>
+            <td>@item.Leavename</td>
             <td>@item.StartingDate</td>
             <td>@item.EndingDate</td>
             <td>@item.TotalNoDays</td>
@@ -56,42 +57,14 @@
        </tbody>
             <tfoot>
                 <tr>
-                    <td>
-                    </td>
+                   
                 </tr>
             </tfoot>
     </table>
    
     </body>
 
-<script>
-    function deleteLeave(Emp_Id) {
-        let result = confirm("Are you sure you want to delete?");
-        if (result) {
-            $.ajax({
-                type: "get",
-                url: '/Home/DeleteLeave?Emp_Id=' + Emp_Id,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function (response) {
-                    if (response.success == true) {
-                        alert("ertyuj");
-                        location.reload();
-                    }
-                    else {
-                        alert(response.message);
-                    }
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        }
-    }
-</script>
-
-</script>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 @section scripts
     {
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css" />

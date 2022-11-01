@@ -1,9 +1,14 @@
 ﻿using Employee_Leaving.Models;
 using Employee_Leaving.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using System.Security.Claims;
+using System.Security.Policy;
+using Microsoft.AspNetCore.Authorization;
 
 namespace User.Controllers
 {
@@ -17,11 +22,10 @@ namespace User.Controllers
             _logger = logger;
             _ad = admin;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
-            var obj = _ad.GetAll();
-            return View(obj);
+             return RedirectToAction("EmployeeDetails");
         }
 
         public IActionResult Privacy()
@@ -32,7 +36,19 @@ namespace User.Controllers
         {
             return View();
         }
+        [Authorize]
+        public IActionResult LeaveList()
+        {
+            var obj = _ad.EmployeeLeavedetails();
+            return View(obj);
+        }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Admin", "Home");
+        }
+        [Authorize]
         public IActionResult LeaveApply()
         {
             LeaveDTO types = new LeaveDTO();
@@ -57,86 +73,118 @@ namespace User.Controllers
             return View(types);
         }
 
-
+        [Authorize]
         [HttpPost]
         public IActionResult Leave(Leave lev)
         {
             var lev1 = _ad.AddLeave(lev);
             return Json(lev1);
         }
-         
 
-            [HttpGet]
+        [Authorize]
+        [HttpGet]
         public IActionResult AddEmployee()
         {
-            return View();
+            LoginDTO types = new LoginDTO();
+            var namelist = _ad.Types().ToList();
+            types.RollType = new List<SelectListItem>();
+            types.RollType.Add(new SelectListItem() { Value = "0", Text = "Select Roll" });
+            types.RollType.AddRange(
+            _ad.Types().Select(a => new SelectListItem
+            {
+                Text = a.RollName,
+                Value = a.RollId.ToString(),
+            }));
+            return View(types);
         }
+    
         [HttpPost]
         public IActionResult AddEmployees(Employee emp)
-        {
-
-            Message msg = new Message();
-            var emp1 = _ad.GetbyEmail(emp.Email_Id);
-            if(emp1 == null)
-            {
+        {  
                 var obj = _ad.AddEmployee(emp);
-                msg.success = true;
-                ViewBag.Message = msg.message = "The Employee Added succesfully";
-                return View("AddEmployee");
-            }
-            else
-            {
-                msg.success = false;
-                ViewBag.Message = msg.message = "The Email Id Already exist";
-            }
-            return View("AddEmployee");
+                return Json(obj);
+   
         }
-
+        [Authorize]
         public IActionResult LeaveDetailsshow(int id)
         {
             var obj = _ad.GetEmployeeLeave(id);
             return View(obj);
         }
-
+        [Authorize]
         public IActionResult LeaveDetails()
         {
-            var obj = _ad.GetAll();
+            var obj = _ad.EmployeeLeavedetails();
             return View(obj);
         }
+        [Authorize]
         public IActionResult EditEmployee(int Emp_Id)
         {
             var obj = _ad.GetbyId(Emp_Id);
             return View("AddEmployee",obj);
         }
-
+        [Authorize]
         public IActionResult DeleteEmployee(int Emp_Id)
         {
             var obj = _ad.DeleteEmployee(Emp_Id);
             return Json(obj);
         }
-
+        [Authorize]
         public IActionResult DeleteLeave(int Emp_Id)
         {
             var obj = _ad.DeleteLeave(Emp_Id);
             return Json(obj);
         }
+        [Authorize]
         public IActionResult EmployeeDetails()
         {
             var obj = _ad.GetEmployee();
             return View(obj);
         }
+        [Authorize]
         [HttpGet]
-        public IActionResult Accept(int id, int Cid)
+        public IActionResult Accept(int id,int Cid)
         {
             var accept = _ad.AcceptLeave(id,Cid);
             return Json(accept);
         }
-
+        [Authorize]
         [HttpGet]
-        public IActionResult Reject(int id, int Cid)
+        public IActionResult Reject(int id,int Cid)
         {
             var reject =_ad.RejectLeave(id,Cid);
             return Json(reject);
+        }
+       
+
+        [HttpPost]
+        public async Task<IActionResult> Admin(LoginDTO login)
+        {
+            var user = _ad.loginbyid(login.Email_Id, login.Password);
+            if (user != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier , user.Emp_Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Email_Id),
+                    new Claim(ClaimTypes.Role, user.RollName)
+
+              };
+                var claimsIdentity = new ClaimsIdentity(claims, "Admin");
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                if (user.RollName == "Admin")
+                {
+                    return Redirect(login.ReturnUrl == null ? "/Home/EmployeeDetails" : login.ReturnUrl);
+                }
+                else 
+                {
+                    return Redirect(login.ReturnUrl == null ?  login.ReturnUrl: "/Home/LeaveApply");
+
+                }
+            }
+            else
+                return View(login);
         }
 
 
