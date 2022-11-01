@@ -25,7 +25,7 @@ namespace User.Controllers
         [Authorize]
         public IActionResult Index()
         {
-             return RedirectToAction("EmployeeDetails");
+             return View();
         }
 
         public IActionResult Privacy()
@@ -173,15 +173,9 @@ namespace User.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, "Admin");
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                if (user.RollName == "Admin")
-                {
-                    return Redirect(login.ReturnUrl == null ? "/Home/EmployeeDetails" : login.ReturnUrl);
-                }
-                else 
-                {
-                    return Redirect(login.ReturnUrl == null ?  login.ReturnUrl: "/Home/LeaveApply");
-
-                }
+                    return Redirect(login.ReturnUrl == null ? "/Home/Index" : login.ReturnUrl);
+             
+               
             }
             else
                 return View(login);

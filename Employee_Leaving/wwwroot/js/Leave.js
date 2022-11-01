@@ -13,7 +13,7 @@ $(document).ready(function () {
             data: valdata,
             success: function (response) {
                 if (response.success == true) {
-                    window.location.href = "/Home/LeaveDetails";
+                    location.reload();
                 }
                 else {
                     alert(response.message);
