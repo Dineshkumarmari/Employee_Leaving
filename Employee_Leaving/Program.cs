@@ -19,7 +19,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Name = ".AspNetCore.Cookies"; options.ExpireTimeSpan = TimeSpan.FromMinutes(3); options.SlidingExpiration = true;
+    options.Cookie.Name = ".AspNetCore.Cookies";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(3); 
+    options.SlidingExpiration = true;
 });
 
 
@@ -52,5 +54,6 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
 
 app.Run();

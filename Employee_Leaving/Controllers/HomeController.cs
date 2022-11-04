@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Security.Policy;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace User.Controllers
 {
@@ -48,37 +49,61 @@ namespace User.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Admin", "Home");
         }
+
         [Authorize]
         public IActionResult LeaveApply()
         {
+            var claim = User.Claims;
+
+            string role = User.Identity.GetClaimRole();
+            string Id = User.Identity.GetClaimValue();
             LeaveDTO types = new LeaveDTO();
-            var namelist = _ad.GetEmployee().ToList();
-            types.EmpList = new List<SelectListItem>();
-            types.EmpList.Add(new SelectListItem() { Value = "0", Text = "Select Name" });
-            types.EmpList.AddRange(
-            _ad.GetEmployee().Select(a => new SelectListItem
+            if (User.Identity.IsAuthenticated)
             {
-                Text = a.Name,
-                Value = a.Emp_Id.ToString(),
-            }));
-            var Typelist = _ad.GetAllType().ToList();
-            types.Leavetypes = new List<SelectListItem>();
-            types.Leavetypes.Add(new SelectListItem() { Value = "0", Text = "Select Type" });
-            types.Leavetypes.AddRange(
-            _ad.GetAllType().Select(a => new SelectListItem
-            {
-                Text = a.LeaveType,
-                Value = a.LeaveType_Id.ToString()
-            }));
+                var namelist = _ad.GetEmployee().ToList();
+                types.EmpList = new List<SelectListItem>();
+                if (role == "Admin")
+                {
+                    types.EmpList.Add(new SelectListItem() { Value = "0", Text = "Select Name" });
+                    types.EmpList.AddRange(
+                    _ad.GetEmployee().Select(a => new SelectListItem
+                    {
+                        Text = a.Name,
+                        Value = a.Emp_Id.ToString(),
+                    }));
+
+                }
+                else
+                {
+                    types.EmpList.AddRange(
+                _ad.GetEmployee().Where(x => x.Emp_Id.ToString() == Id).Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Emp_Id.ToString(),
+                }));
+                }
+
+                var Typelist = _ad.GetAllType().ToList();
+                types.Leavetypes = new List<SelectListItem>();
+                types.Leavetypes.Add(new SelectListItem() { Value = "0", Text = "Select Type" });
+                types.Leavetypes.AddRange(
+                _ad.GetAllType().Select(a => new SelectListItem
+                {
+                    Text = a.LeaveType,
+                    Value = a.LeaveType_Id.ToString()
+                }));
+            }
             return View(types);
         }
+          
+        
 
         [Authorize]
         [HttpPost]
         public IActionResult Leave(Leave lev)
         {
-            var lev1 = _ad.AddLeave(lev);
-            return Json(lev1);
+            var leave = _ad.AddLeave(lev);
+            return Json(leave);
         }
 
         [Authorize]
@@ -100,10 +125,10 @@ namespace User.Controllers
     
         [HttpPost]
         public IActionResult AddEmployees(Employee emp)
-        {  
-                var obj = _ad.AddEmployee(emp);
-                return Json(obj);
-   
+        {
+            var obj = _ad.AddEmployee(emp);
+            return Json(obj);
+           
         }
         [Authorize]
         public IActionResult LeaveDetailsshow(int id)
@@ -111,31 +136,72 @@ namespace User.Controllers
             var obj = _ad.GetEmployeeLeave(id);
             return View(obj);
         }
+
         [Authorize]
+        public IActionResult EmployeeCheckList(int id)
+        {
+            Employee obj = _ad.GetbyId(id);
+            return View(obj);
+        }
+
+        [Authorize(Roles ="Admin")]
         public IActionResult LeaveDetails()
         {
             var obj = _ad.EmployeeLeavedetails();
             return View(obj);
         }
+
+        [HttpGet]
         [Authorize]
-        public IActionResult EditEmployee(int Emp_Id)
+        public IActionResult Edit(int Emp_Id)
         {
-            var obj = _ad.GetbyId(Emp_Id);
-            return View("AddEmployee",obj);
+            Employee obj = _ad.GetbyId(Emp_Id);
+            return View("EditEmployee", obj);
         }
+
+       
+        [Authorize]
+        public IActionResult EditEmployee(Employee emp)
+        {
+            string role = User.Identity.GetClaimRole();
+            if(role=="Admin")
+            {
+                var obj = _ad.UpdateEmp(emp);
+                return RedirectToAction("EmployeeDetails");
+            }
+            else
+            {
+                int id=emp.Emp_Id;
+                var obj = _ad.UpdateEmp(emp);
+                return Redirect("EmployeeCheckList?id="+id);
+            }
+           
+        }
+
+
         [Authorize]
         public IActionResult DeleteEmployee(int Emp_Id)
         {
             var obj = _ad.DeleteEmployee(Emp_Id);
             return Json(obj);
         }
+
         [Authorize]
         public IActionResult DeleteLeave(int Emp_Id)
         {
-            var obj = _ad.DeleteLeave(Emp_Id);
-            return Json(obj);
+            string role = User.Identity.GetClaimRole();
+            if(role == "Admin")
+            {
+                var obj = _ad.DeleteLeave(Emp_Id);
+                return Json(obj);
+            }
+            else
+            {
+                var obj = _ad.DeleteLeavebyEmp(Emp_Id);
+                return Json(obj);
+            }
         }
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public IActionResult EmployeeDetails()
         {
             var obj = _ad.GetEmployee();

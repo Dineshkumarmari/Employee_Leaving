@@ -18,6 +18,7 @@ namespace Employee_Leaving.Repository
         public Leave Getbyid(int id); 
         public Leave GetbyRemainingDays(Leave lev);
         public Message DeleteLeave(int id);
+        public Message DeleteLeavebyEmp(int id);
         public Message AcceptLeave(int id,int Cid);
         public Message RejectLeave(int id, int Cid);
         public IEnumerable<EmployeeLeaveDetails>GetEmployeeLeave(int id);

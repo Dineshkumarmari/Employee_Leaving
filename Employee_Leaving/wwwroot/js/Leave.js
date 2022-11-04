@@ -12,7 +12,9 @@ $(document).ready(function () {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             data: valdata,
             success: function (response) {
-                if (response.success == true) {
+                if (response.success == true)
+                {
+                    alert(response.message);
                     location.reload();
                 }
                 else {

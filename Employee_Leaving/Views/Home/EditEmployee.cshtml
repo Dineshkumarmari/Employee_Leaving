@@ -1,29 +1,25 @@
-﻿@model Employee_Leaving.Models.LoginDTO
+﻿@model Employee_Leaving.Models.Employee
 @{
     ViewData["Title"] = "Add Employee";
- 
+
 }
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Leave Apply</title>
     <style>
-        *{
-          font-family:'Times New Roman', Times, serif;
+        * {
+            font-family: 'Times New Roman', Times, serif;
         }
     </style>
 </head>
-<body style="background-color:white; color:black">
+<body style="background-color:lavender; color:black">
 
-    <div class=" btn btn-warning " id="heading" >
-        @Html.ActionLink("Back to List","EmployeeDetails")
-    </div>
-
-    <div class="text-center card w-50 mx-auto " style="box-shadow:20px 20px 50px 10px lightblue inset" >
-     <div class="card-body shadow rounded">
+    <div class="text-center card w-50 mx-auto " style="box-shadow:20px 20px 50px 10px lightblue inset">
+        <div class="card-body shadow rounded">
 
             <h1 class="display-8 card-title" style="color:black">Employee Registration</h1>
-           
+
             <style>
                 table {
                     width: 40%;
@@ -37,25 +33,20 @@
                     color: red;
                 }
             </style>
-           
-            
-            @using (Html.BeginForm("AddEmployees", "Home", FormMethod.Post, new { id = "Employeeform" }))
+
+
+            @using (Html.BeginForm("EditEmployee", "Home", FormMethod.Post))
             {
 
                 <div class="card-text ">
                     <div align="center">
-                        
+
                         @Html.HiddenFor(m => m.Emp_Id)
-                        <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 "required">
+                        <div style="height:50px; width: 85% ;" class="mx-auto row row-cols-3 " required">
                             <div class='form-group required'>Name:<span style="color:red;font-size:20px">*</span> </div>
-                            <div > @Html.TextBoxFor(m => m.Name ,new {  @class="form-control",required = "required",StringLength=25, MinimumLength = 5, ErrorMessage = "The name have minimum 5 and maximum 25 character",} ) </div>
+                            <div> @Html.TextBoxFor(m => m.Name ,new {  @class="form-control",required = "required",StringLength=25, MinimumLength = 5, ErrorMessage = "The name have minimum 5 and maximum 25 character",} ) </div>
                         </div>
-                        <div style="height:50px;width: 85% ;" class=" mx-auto row row-cols-3 ">
-                            <div>Roll Name:<span style="color:red;font-size:20px">*</span> </div>
-                            <div>
-                                @Html.DropDownListFor(m=>m.RollId,Model.RollType, new {@class="form-control" })
-                            </div>
-                        </div>
+
                         <div style="height:50px;width: 85% ;" class=" mx-auto row row-cols-3 ">
                             <div>Email Id:<span style="color:red;font-size:20px">*</span> </div>
                             <div> @Html.TextBoxFor(m => m.Email_Id,new {  @class="form-control",required = "required" , maxlength = "30"} )</div>
@@ -71,11 +62,11 @@
                         <div style="height:50px;width: 85% ;" class=" row row-cols-3 ">
                             <div>Gender: </div>
                             <div>
-                                    <label for="gender">Male</label>
-                                    @Html.RadioButtonFor(m=>m.Gender ,"Male")
-                                    <label for="gender">Female</label>
-                                   @Html.RadioButtonFor(m=>m.Gender ,"Female")
-                             </div>
+                                <label for="gender">Male</label>
+                                @Html.RadioButtonFor(m=>m.Gender ,"Male")
+                                <label for="gender">Female</label>
+                                @Html.RadioButtonFor(m=>m.Gender ,"Female")
+                            </div>
                         </div>
                         <div style="height:50px;width: 85% ;" class=" row row-cols-3 ">
                             <div>Age:  </div>
@@ -85,19 +76,19 @@
                         </div>
                         <div style="height:50px;width: 85% ;" class=" row row-cols-3 ">
                             <div>City: </div>
-                         
+
                             <div>@Html.TextBoxFor(m => m.Location ,new {  @class="form-control",required = "required" , maxlength = "20"} )</div>
                         </div>
                         <br />
-                        <div>  <input type="submit" class="btn btn-danger"  value="Submit" /></div>
+                        <div>  <input type="submit" class="btn btn-danger" value="Submit" /></div>
                     </div>
-              </div>
-        
-          }      
-       </div>
-     </div>
+                </div>
+
+            }
+        </div>
+    </div>
 </body>
 </html>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 
 

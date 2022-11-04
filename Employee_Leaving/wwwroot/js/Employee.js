@@ -10,8 +10,9 @@ $(document).ready(function () {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             data: valdata,
             success: function (response) {
-                if (response.success == true) {
-                    window.location.href = "/Home/EmployeeDetails";
+                if (response.success == true)
+                {
+                   window.location.href = "/Home/EmployeeDetails"
                 }
                 else {
                     alert(response.message);
@@ -25,6 +26,7 @@ $(document).ready(function () {
 
     });
 });
+
 
 
 function deleteEmployee(Emp_Id) {

@@ -23,6 +23,7 @@
     <table class="table" id="dataTable">
         <thead style="background-color:khaki ;">
         <tr>
+        <th>Employee Id</th>
         <th>Employee Name</th>
         <th>Leave Type</th>
         <th>Starting Date</th>
@@ -30,6 +31,7 @@
         <th>Total No Days</th>
         <th>Status</th>
         <th>Remaining NoLeaveDays</th>
+        <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -37,6 +39,7 @@
             @foreach (EmployeeLeaveDetails item in Model)
             {
                 <tr>
+                    <td>@item.Emp_Id</td>
                     <td>@item.EmployeeName</td>
                     <td>@item.Leavename</td>
                     <td>@item.StartingDate</td>
@@ -45,7 +48,12 @@
                     <td>@item.ActionResult</td>
                     <td>@item.RemainingLeaveDays</td>
 
+
+                    <td>
+                        <a onclick="deleteLeave(@item.Emp_Id)" style="margin-left:30px" class=" btn btn-danger">Delete</a>
+                    </td>
                 </tr>
+
             }
         </tbody>
         <tfoot>
