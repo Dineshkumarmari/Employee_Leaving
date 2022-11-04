@@ -168,8 +168,8 @@ namespace Employee_Leaving.Repository
         {
             Message msg = new Message();
             var emp = leavingDb.Leave.Where(x => x.Emp_Id == id).ToList();
-            var emp1 = emp.LastOrDefault(x => x.ActionResult == "Pending");
-            if (emp != null && emp1!=null)
+            var emp1 = emp.FirstOrDefault(x => x.ActionResult == "Pending");
+            if (emp1!=null)
             {
                 leavingDb.Remove(emp1);
                 leavingDb.SaveChanges();
