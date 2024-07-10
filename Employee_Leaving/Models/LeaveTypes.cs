@@ -11,6 +11,6 @@ namespace Employee_Leaving.Models
      public string? LeaveType { get; set; }
      public int TotalDays { get; set; }
 
-   
+   // Azure Test PipeLine
     }
 }
