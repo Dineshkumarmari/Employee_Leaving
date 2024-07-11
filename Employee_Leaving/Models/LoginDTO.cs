@@ -19,9 +19,9 @@ namespace Employee_Leaving.Models
         public int Age { get; set; }
 
         public string? Location { get; set; }
-        public string RollName { get; set; }
-        public string ReturnUrl { get; set; }
-        public List<SelectListItem> RollType { get; set; }
+        public string? RollName { get; set; }
+        public string? ReturnUrl { get; set; }
+        public List<SelectListItem>? RollType { get; set; }
 
     }
 }

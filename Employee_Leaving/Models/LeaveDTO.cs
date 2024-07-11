@@ -11,7 +11,7 @@ namespace Employee_Leaving.Models
         public DateTime? StartingDate { get; set; }
         public DateTime? EndingDate { get; set; }
         public int TotalNoDays { get; set; }
-        public List<SelectListItem> Leavetypes { get; set; }
-        public List<SelectListItem> EmpList { get; set; }
+        public List<SelectListItem>? Leavetypes { get; set; }
+        public List<SelectListItem>? EmpList { get; set; }
     }
 }
