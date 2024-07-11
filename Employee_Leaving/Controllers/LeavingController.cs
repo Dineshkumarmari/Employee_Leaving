@@ -40,8 +40,8 @@ namespace Employee_Leaving.Controllers
         [HttpGet("/api/Employee/{id}")]
         public IActionResult GetbyId(int id)
         {
-            var emp= leave.GetbyId(id);
-            if (emp == null)
+            var emp = leave.GetbyId(id);
+            if (emp.Emp_Id != id)
             {
                 throw new Exception("This employee id not registered");
             }
@@ -67,7 +67,7 @@ namespace Employee_Leaving.Controllers
         {
             var del = leave.GetbyId(id);
             var del1 = leave.Getbyid(id);
-            if (del != null&& del1 != null)
+            if (del != null)
             {
                 var emp = leave.DeleteEmployee(id);
                 return Ok(emp);
