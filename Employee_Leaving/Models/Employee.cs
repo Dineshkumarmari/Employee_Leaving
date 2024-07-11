@@ -10,6 +10,7 @@ namespace Employee_Leaving.Models
 {
     public class Employee
     {
+        //Azure PipeLine 
         [Key]
         public int Emp_Id { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "The name can not be empty")]
