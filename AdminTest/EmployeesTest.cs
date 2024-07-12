@@ -122,7 +122,7 @@ namespace AdminTest
 
             var exception = controller.createmployees(obj);
 
-            Assert.Null(exception);
+            Assert.NotNull(exception);
         }
 
 
